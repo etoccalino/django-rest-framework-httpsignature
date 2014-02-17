@@ -29,6 +29,13 @@ TODO:
 - document requirement of `http_signature by David Lehn`_ and motivation (update to version 01 of spec).
 
 
+Running the tests
+-----------------
+
+To run the tests for the packages, su::
+
+  python manage.py test rest_framework_httpsignature
+
 Usage
 -----
 
