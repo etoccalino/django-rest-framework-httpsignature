@@ -1,0 +1,7 @@
+* Investigate requirements:
+  * how far down Django?
+  * how far down rest_framework?
+  * what version of http_signature? Install and register.
+* Finish README.
+* Start building tests.
+* Bring in authentication code.
