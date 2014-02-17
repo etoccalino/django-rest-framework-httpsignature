@@ -31,6 +31,7 @@ class SignatureAuthentication(authentication.BaseAuthentication):
         """Translate HTTP headers to Django header names."""
         # Translate as stated in the docs:
         # https://docs.djangoproject.com/en/1.6/ref/request-response/#django.http.HttpRequest.META
+        header_name = header_name.lower()
         if header_name == 'content-type':
             return 'CONTENT-TYPE'
         elif header_name == 'content-length':
@@ -38,7 +39,10 @@ class SignatureAuthentication(authentication.BaseAuthentication):
         return 'HTTP_%s' % header_name.replace('-', '_').upper()
 
     def build_dict_to_sign(self, request, signature_headers):
-        """Build a dict with headers and values used in the signature."""
+        """Build a dict with headers and values used in the signature.
+
+        "signature_headers" is a list of lowercase header names.
+        """
         d = {}
         for header in signature_headers:
             if header == 'request-line':
