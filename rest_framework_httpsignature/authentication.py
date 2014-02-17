@@ -53,13 +53,15 @@ class SignatureAuthentication(authentication.BaseAuthentication):
     def build_signature(self, user_api_key, user_secret, request):
         """Return the signature for the request."""
         path = request.get_full_path()
-        sent_signature = request.META.get(self.header_canonical('Authorization'))
+        sent_signature = request.META.get(
+            self.header_canonical('Authorization'))
         signature_headers = self.get_headers_from_signature(sent_signature)
         unsigned = self.build_dict_to_sign(request, signature_headers)
 
         # Sign string and compare.
-        signer = HeaderSigner(key_id=user_api_key, secret=user_secret,
-                              headers=signature_headers, algorithm='hmac-sha256')
+        signer = HeaderSigner(
+            key_id=user_api_key, secret=user_secret,
+            headers=signature_headers, algorithm='hmac-sha256')
         signed = signer.sign(unsigned, method=request.method, path=path)
         return signed['authorization']
 
