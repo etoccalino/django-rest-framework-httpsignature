@@ -5,7 +5,7 @@ setup(
     name='djangorestframework-httpsignature',
     version='0.1.0',
     url='https://github.com/etoccalino/django-rest-framework-httpsignature',
-    license='MIT',
+    license='LICENSE.txt',
     description='HTTP Signature support for Django REST framework',
     install_requires=open('REQUIREMENTS.txt').read().split('\n'),
     author='Elvio Toccalino',
