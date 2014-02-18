@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name='djangorestframework-httpsignature',
-    version='0.1.0',
+    version='0.1.1',
     url='https://github.com/etoccalino/django-rest-framework-httpsignature',
 
     license='LICENSE.txt',
@@ -23,9 +23,6 @@ setup(
     author='Elvio Toccalino',
     author_email='me@etoccalino.com',
     packages=['rest_framework_httpsignature'],
-    # package_data={
-    #     'rest_framework_httpsignature': ,
-    # },
     classifiers=[
         'Development Status :: 1 - Planning',
         'Environment :: Web Environment',
