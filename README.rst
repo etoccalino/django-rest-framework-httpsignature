@@ -8,7 +8,7 @@ TODO:
 
 
 Overview
-========
+--------
 
 Provides `HTTP Signature`_ support for `Django REST framework`_. The HTTP Signature provides a way to achieve origin authentication and message integrity to HTTP messages.
 
