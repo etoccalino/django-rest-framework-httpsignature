@@ -15,9 +15,17 @@ APIKEY_TO_KEY = {
 
 class SignatureAuthentication(authentication.BaseAuthentication):
 
+    SIGNATURE_RE = re.compile('.+signature="(.+)",?.*')
     SIGNATURE_HEADERS_RE = re.compile('.+headers="([\sa-z0-9-]+)".*')
 
     API_KEY_HEADER = 'X-Api-Key'
+
+    def get_signature_from_signature_string(self, signature):
+        """Return the signature from the signature header or None."""
+        match = self.SIGNATURE_RE.match(signature)
+        if not match:
+            return None
+        return match.group(1)
 
     def get_headers_from_signature(self, signature):
         """Returns a list of headers fields to sign."""
@@ -78,15 +86,18 @@ class SignatureAuthentication(authentication.BaseAuthentication):
 
         # Check if request has a "Signature" request header.
         authorization_header = self.header_canonical('Authorization')
-        sent_signature = request.META.get(authorization_header)
-        if not sent_signature:
+        sent_string = request.META.get(authorization_header)
+        if not sent_string:
             raise exceptions.AuthenticationFailed('No signature provided')
+        sent_signature = self.get_signature_from_signature_string(sent_string)
 
         # Fetch credentials for API key from the data store.
         user, secret = self.fetch_user_data(api_key)
 
         # Build string to sign from "headers" part of Signature value.
-        computed_signature = self.build_signature(api_key, secret, request)
+        computed_string = self.build_signature(api_key, secret, request)
+        computed_signature = self.get_signature_from_signature_string(
+            computed_string)
 
         if computed_signature != sent_signature:
             raise exceptions.AuthenticationFailed('Bad signature')

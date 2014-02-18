@@ -1,15 +1,15 @@
-from django.test import SimpleTestCase, RequestFactory
-# from django.contrib.auth import get_user_model
-# User = get_user_model()
+from django.test import SimpleTestCase, TestCase, RequestFactory
+from django.contrib.auth import get_user_model
 from rest_framework_httpsignature.authentication import SignatureAuthentication
 from rest_framework.exceptions import AuthenticationFailed
 import re
 
+User = get_user_model()
 
 ENDPOINT = '/api'
 METHOD = 'GET'
 KEYID = 'some-key'
-SECRET = 'some secret'
+SECRET = 'my secret string'
 SIGNATURE = 'some.signature'
 
 
@@ -90,12 +90,23 @@ class SignatureTestCase(SimpleTestCase):
         self.assertTrue('accept' in headers)
         self.assertTrue('request-line' in headers)
 
+    def test_get_signature(self):
+        signature_string = build_signature(['request-line', 'date'])
+        signature = self.auth.get_signature_from_signature_string(
+            signature_string)
+        self.assertEqual(SIGNATURE, signature)
+
+    def test_get_signature_without_headers(self):
+        signature_string = build_signature([])
+        signature = self.auth.get_signature_from_signature_string(
+            signature_string)
+        self.assertEqual(SIGNATURE, signature)
+
 
 class BuildSignatureTestCase(SimpleTestCase):
 
     request = RequestFactory()
     KEYID = 'su-key'
-    SECRET = 'my secret string'
 
     def setUp(self):
         self.auth = SignatureAuthentication()
@@ -123,7 +134,72 @@ class BuildSignatureTestCase(SimpleTestCase):
             HTTP_AUTHORIZATION=expected_signature_string)
 
         signature_string = self.auth.build_signature(
-            self.KEYID, self.SECRET, req)
+            self.KEYID, SECRET, req)
         signature = re.match(
             '.*signature="(.+)",?.*', signature_string).group(1)
         self.assertEqual(expected_signature, signature)
+
+
+class SignatureAuthenticationTestCase(TestCase):
+
+    class APISignatureAuthentication(SignatureAuthentication):
+        """Extend the SignatureAuthentication to test it."""
+
+        API_KEY_HEADER = 'X-Api-Key'
+
+        def __init__(self, user):
+            self.user = user
+
+        def fetch_user_data(self, api_key):
+            if api_key != KEYID:
+                raise AuthenticationFailed('Bad API key')
+
+            return (self.user, SECRET)
+
+    TEST_USERNAME = 'test-user'
+    TEST_PASSWORD = 'test-password'
+
+    def setUp(self):
+        User.objects.create(username=self.TEST_USERNAME)
+        self.test_user = User.objects.get(username=self.TEST_USERNAME)
+        self.test_user.set_password(self.TEST_PASSWORD)
+        self.auth = self.APISignatureAuthentication(self.test_user)
+
+    def test_no_credentials(self):
+        request = RequestFactory().get(ENDPOINT)
+        res = self.auth.authenticate(request)
+        self.assertIsNone(res)
+
+    def test_only_api_key(self):
+        request = RequestFactory().get(
+            ENDPOINT, {},
+            HTTP_X_API_KEY=KEYID)
+        self.assertRaises(AuthenticationFailed,
+                          self.auth.authenticate, request)
+
+    def test_bad_signature(self):
+        request = RequestFactory().get(
+            ENDPOINT, {},
+            HTTP_X_API_KEY=KEYID,
+            HTTP_AUTHORIZATION='some-wrong-value')
+        self.assertRaises(AuthenticationFailed,
+                          self.auth.authenticate, request)
+
+    def test_can_authenticate(self):
+        headers = ['request-line', 'accept', 'date', 'host']
+        expected_signature = 'DvQs08T31vR83r5tUqonb6EcpHb+BtDPEbCZ1/WVH58='
+        expected_signature_string = build_signature(
+            headers,
+            key_id=KEYID,
+            signature=expected_signature)
+        request = RequestFactory().get(
+            '/packages/measures/', {},
+            HTTP_HOST='localhost:8000',
+            HTTP_DATE='Mon, 17 Feb 2014 06:11:05 GMT',
+            HTTP_ACCEPT='application/json',
+            HTTP_AUTHORIZATION=expected_signature_string,
+            HTTP_X_API_KEY=KEYID)
+
+        result = self.auth.authenticate(request)
+        self.assertIsNotNone(result)
+        self.assertEqual(result[0], self.test_user)
