@@ -2,9 +2,8 @@
 django-rest-framework-httpsignature
 ===================================
 
-TODO:
-
-- Travis tag
+.. image:: https://travis-ci.org/etoccalino/django-rest-framework-httpsignature.png?branch=master
+           :target: https://travis-ci.org/etoccalino/django-rest-framework-httpsignature
 
 
 Overview
