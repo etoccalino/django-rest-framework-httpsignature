@@ -5,14 +5,6 @@ from http_signature import HeaderSigner
 import re
 
 
-APIKEY_TO_KEY = {
-    'su-key': {
-        'username': 'su',
-        'key': 'my secret string',
-    }
-}
-
-
 class SignatureAuthentication(authentication.BaseAuthentication):
 
     SIGNATURE_RE = re.compile('.+signature="(.+)",?.*')
@@ -103,22 +95,3 @@ class SignatureAuthentication(authentication.BaseAuthentication):
             raise exceptions.AuthenticationFailed('Bad signature')
 
         return (user, None)
-
-
-class APISignatureAuthentication(SignatureAuthentication):
-    API_KEY_HEADER = 'X-Api-Key'
-
-    def fetch_user_data(self, api_key):
-        if api_key not in APIKEY_TO_KEY:
-            raise exceptions.AuthenticationFailed('Bad API key')
-
-        user_data = APIKEY_TO_KEY[api_key]
-        username = user_data.get('username')
-        secret = user_data.get('key')
-
-        try:
-            user = User.objects.get(username=username)
-        except User.DoesNotExist:
-            raise exceptions.AuthenticationFailed('Bad user data')
-
-        return (user, secret)
