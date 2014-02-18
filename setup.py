@@ -8,7 +8,7 @@ setup(
 
     license='LICENSE.txt',
     description='HTTP Signature support for Django REST framework',
-    long_description=open('README.txt').read(),
+    long_description=open('README.rst').read(),
 
     install_requires=[
         'Django==1.6.2',
