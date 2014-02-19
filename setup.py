@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name='djangorestframework-httpsignature',
-    version='0.1.1',
+    version='0.1.2',
     url='https://github.com/etoccalino/django-rest-framework-httpsignature',
 
     license='LICENSE.txt',
@@ -24,7 +24,7 @@ setup(
     author_email='me@etoccalino.com',
     packages=['rest_framework_httpsignature'],
     classifiers=[
-        'Development Status :: 1 - Planning',
+        'Development Status :: 3 - Alpha',
         'Environment :: Web Environment',
         'Framework :: Django',
         'Intended Audience :: Developers',
@@ -32,5 +32,6 @@ setup(
         'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Topic :: Internet :: WWW/HTTP',
+        'Topic :: Security',
     ]
 )

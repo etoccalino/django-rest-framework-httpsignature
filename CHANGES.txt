@@ -1,3 +1,8 @@
+v0.1.2, 20140219 -- Package data and clean up
+
+        * Updated package classifiers
+        * Cleaned up unused code in authentication.py
+
 v0.1.1, 20140217 -- Documentation and clean up
 
         * The package can be installed.
