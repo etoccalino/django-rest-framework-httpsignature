@@ -19,7 +19,7 @@ Installation
 
 Installing the package via the repository::
 
-   pip install git+https://github.com/etoccalino/django-rest-framework-httpsignature
+   pip install djangorestframework-httpsignature
 
 The current implementation depends on `http_signature by David Lehn`_, who has updated the original code to match the revised spec. This dependency is reflected in the ``REQUIREMENTS.txt`` file, and pip will pull the code from David's repository.
 
@@ -29,7 +29,7 @@ Running the tests
 
 To run the tests for the packages, use the following command on the repository root directory::
 
-  python manage.py test rest_framework_httpsignature
+  python manage.py test
 
 Usage
 =====
