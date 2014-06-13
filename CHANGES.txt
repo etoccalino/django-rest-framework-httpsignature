@@ -1,3 +1,7 @@
+v0.1.5, 20140613 -- Document installation issue
+
+        * Document workaround on installation problems.
+
 v0.1.4, 20140613 -- Improve installation
 
         * Make requirements file comply with docs.

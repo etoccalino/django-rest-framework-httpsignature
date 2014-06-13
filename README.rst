@@ -24,6 +24,20 @@ Installing the package via the repository::
 The current implementation depends on `http_signature by David Lehn`_, who has updated the original code to match the revised spec. This dependency is reflected in the ``REQUIREMENTS.txt`` file, and pip will pull the code from David's repository.
 
 
+Troubleshooting
+---------------
+
+It has been reported that some newer versions of pip might download the requiered package http_signature from PyPI instead of the repository listed in REQUIREMENTS.txt. If this is your case, a workaround is:
+
+1. ``git clone https://github.com/etoccalino/django-rest-framework-httpsignature.git``
+2. ``cd django-rest-framework-httpsignature``
+3. remove the whole line in REQUIREMENTS.txt that references **py-http-signature**
+4. ``pip install`` the entire line (including the "-e" at the beginning)
+5. ``pip install -r REQUIREMENTS.txt``
+
+Those steps make explicity what should be automatic. Thanks Alberto Gragera for both spotting the problem and providing a solution.
+
+
 Running the tests
 =================
 
