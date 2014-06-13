@@ -1,4 +1,3 @@
 * Investigate requirements:
   * how far down Django?
   * how far down rest_framework?
-  * what version of http_signature? Install and register.
