@@ -116,7 +116,7 @@ And with much less pain, using the modules ``requests`` and ``http_signature``::
   API_KEY_ID = 'su-key'
   SECRET = 'my secret string'
 
-  signature_headers = ['request-line', 'accept', 'date', 'host']
+  signature_headers = ['(request-line)', 'accept', 'date', 'host']
   headers = {
       'Host': 'localhost:8000',
       'Accept': 'application/json',

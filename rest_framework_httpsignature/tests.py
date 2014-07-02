@@ -63,9 +63,9 @@ class HeadersUnitTestCase(SimpleTestCase):
         req = self.request.get(ENDPOINT, {}, HTTP_X_DATE="some date")
         dict_to_sign = self.auth.build_dict_to_sign(
             req,
-            ['request-line', 'date'])
+            ['(request-line)', 'date'])
         self.assertTrue('date' in dict_to_sign.keys())
-        self.assertTrue('request-line' not in dict_to_sign.keys())
+        self.assertTrue('(request-line)' not in dict_to_sign.keys())
 
 
 class SignatureTestCase(SimpleTestCase):
@@ -84,14 +84,14 @@ class SignatureTestCase(SimpleTestCase):
         self.assertTrue('date' in headers)
 
     def test_many_in_signature(self):
-        signature = build_signature(['date', 'accept', 'request-line'])
+        signature = build_signature(['date', 'accept', '(request-line)'])
         headers = self.auth.get_headers_from_signature(signature)
         self.assertTrue('date' in headers)
         self.assertTrue('accept' in headers)
-        self.assertTrue('request-line' in headers)
+        self.assertTrue('(request-line)' in headers)
 
     def test_get_signature(self):
-        signature_string = build_signature(['request-line', 'date'])
+        signature_string = build_signature(['(request-line)', 'date'])
         signature = self.auth.get_signature_from_signature_string(
             signature_string)
         self.assertEqual(SIGNATURE, signature)
@@ -119,8 +119,8 @@ class BuildSignatureTestCase(SimpleTestCase):
         # date: Mon, 17 Feb 2014 06:11:05 GMT
         # host: localhost:8000
 
-        headers = ['request-line', 'accept', 'date', 'host']
-        expected_signature = 'DvQs08T31vR83r5tUqonb6EcpHb+BtDPEbCZ1/WVH58='
+        headers = ['(request-line)', 'accept', 'date', 'host']
+        expected_signature = 'kIPZjqxzSlODPqdhbZqnjNK9b9pUkyKhe1boKZZ4gbk='
         expected_signature_string = build_signature(
             headers,
             key_id=self.KEYID,
@@ -186,8 +186,8 @@ class SignatureAuthenticationTestCase(TestCase):
                           self.auth.authenticate, request)
 
     def test_can_authenticate(self):
-        headers = ['request-line', 'accept', 'date', 'host']
-        expected_signature = 'DvQs08T31vR83r5tUqonb6EcpHb+BtDPEbCZ1/WVH58='
+        headers = ['(request-line)', 'accept', 'date', 'host']
+        expected_signature = 'kIPZjqxzSlODPqdhbZqnjNK9b9pUkyKhe1boKZZ4gbk='
         expected_signature_string = build_signature(
             headers,
             key_id=KEYID,

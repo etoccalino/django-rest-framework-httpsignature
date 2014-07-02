@@ -1,14 +1,14 @@
 from django.contrib.auth.models import User
 from rest_framework import authentication
 from rest_framework import exceptions
-from http_signature import HeaderSigner
+from httpsig import HeaderSigner
 import re
 
 
 class SignatureAuthentication(authentication.BaseAuthentication):
 
     SIGNATURE_RE = re.compile('.+signature="(.+)",?.*')
-    SIGNATURE_HEADERS_RE = re.compile('.+headers="([\sa-z0-9-]+)".*')
+    SIGNATURE_HEADERS_RE = re.compile('.+headers="([\sa-z0-9-\(\)]+)".*')
 
     API_KEY_HEADER = 'X-Api-Key'
 
@@ -45,7 +45,7 @@ class SignatureAuthentication(authentication.BaseAuthentication):
         """
         d = {}
         for header in signature_headers:
-            if header == 'request-line':
+            if header == '(request-line)':
                 continue
             d[header] = request.META.get(self.header_canonical(header))
         return d

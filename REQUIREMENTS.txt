@@ -1,4 +1,4 @@
 Django==1.6.2
 djangorestframework==2.3.12
 pycrypto==2.6.1
--e git+https://github.com/digitalbazaar/py-http-signature@824de0d8957b4423b1ac986fe47a2d303cdfb434#egg=http_signature
+httpsig==1.0.0
