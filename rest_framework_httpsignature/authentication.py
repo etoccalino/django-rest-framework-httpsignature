@@ -66,7 +66,7 @@ class SignatureAuthentication(authentication.BaseAuthentication):
         return signed['authorization']
 
     def fetch_user_data(self, api_key):
-        """Retuns a tuple (User instance, API Secret) or (None, None)."""
+        """Retuns (User instance, API Secret) or None if api_key is bad."""
         return None
 
     def authenticate(self, request):
@@ -84,9 +84,10 @@ class SignatureAuthentication(authentication.BaseAuthentication):
         sent_signature = self.get_signature_from_signature_string(sent_string)
 
         # Fetch credentials for API key from the data store.
-        user, secret = self.fetch_user_data(api_key)
-        if user is None:
-            raise exceptions.AuthenticationFailed('Bad signature')
+        try:
+            user, secret = self.fetch_user_data(api_key)
+        except TypeError:
+            raise exceptions.AuthenticationFailed('Bad API key')
 
         # Build string to sign from "headers" part of Signature value.
         computed_string = self.build_signature(api_key, secret, request)
