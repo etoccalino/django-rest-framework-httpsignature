@@ -1,11 +1,16 @@
+v0.1.6, 20140706 -- Slight improvement to API
+
+        * Return API key on successful authentication
+          (Thanks Konstantinos Koukopoulos)
+
 v0.1.5, 20140613 -- Document installation issue
 
-        * Document workaround on installation problems.
+        * Document workaround on installation problems
 
 v0.1.4, 20140613 -- Improve installation
 
-        * Make requirements file comply with docs.
-        * Decide on http_signature commit.
+        * Make requirements file comply with docs
+        * Decide on http_signature commit
 
 v0.1.3, 20140220 -- Upload to PyPI
 
@@ -18,9 +23,9 @@ v0.1.2, 20140219 -- Package data and clean up
 
 v0.1.1, 20140217 -- Documentation and clean up
 
-        * The package can be installed.
-        * Continuous integration via Travis.
-        * Unit tests for the authentication code.
-        * General docuementation in the README file.
+        * The package can be installed
+        * Continuous integration via Travis
+        * Unit tests for the authentication code
+        * General docuementation in the README file
 
 v0.1.0, 20140217 -- Initial release
