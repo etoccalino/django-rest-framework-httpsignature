@@ -94,4 +94,4 @@ class SignatureAuthentication(authentication.BaseAuthentication):
         if computed_signature != sent_signature:
             raise exceptions.AuthenticationFailed('Bad signature')
 
-        return (user, None)
+        return (user, api_key)

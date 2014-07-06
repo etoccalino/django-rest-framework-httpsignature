@@ -203,3 +203,4 @@ class SignatureAuthenticationTestCase(TestCase):
         result = self.auth.authenticate(request)
         self.assertIsNotNone(result)
         self.assertEqual(result[0], self.test_user)
+        self.assertEqual(result[1], KEYID)
