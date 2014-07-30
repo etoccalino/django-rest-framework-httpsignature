@@ -14,7 +14,7 @@ setup(
         'Django>=1.6.2,<1.8',
         'djangorestframework>=2.3.14,<2.4',
         'pycrypto>=2.6.1',
-        'http_signature'
+        'http_signature>=0.2.0'
     ],
     author='Elvio Toccalino',
     author_email='me@etoccalino.com',
