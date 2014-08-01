@@ -7,7 +7,7 @@ import re
 
 class SignatureAuthentication(authentication.BaseAuthentication):
 
-    SIGNATURE_RE = re.compile('.+signature="(.+)",?.*')
+    SIGNATURE_RE = re.compile('signature="(.+?)"')
     SIGNATURE_HEADERS_RE = re.compile('.+headers="([\sa-z0-9-]+)".*')
 
     API_KEY_HEADER = 'X-Api-Key'
