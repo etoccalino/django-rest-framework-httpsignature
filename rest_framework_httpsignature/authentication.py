@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 from rest_framework import authentication
 from rest_framework import exceptions
 from http_signature import HeaderSigner
@@ -66,7 +65,7 @@ class SignatureAuthentication(authentication.BaseAuthentication):
         return signed['authorization']
 
     def fetch_user_data(self, api_key):
-        """Retuns a tuple (User instance, API Secret) or None."""
+        """Retuns (User instance, API Secret) or None if api_key is bad."""
         return None
 
     def authenticate(self, request):
@@ -84,7 +83,10 @@ class SignatureAuthentication(authentication.BaseAuthentication):
         sent_signature = self.get_signature_from_signature_string(sent_string)
 
         # Fetch credentials for API key from the data store.
-        user, secret = self.fetch_user_data(api_key)
+        try:
+            user, secret = self.fetch_user_data(api_key)
+        except TypeError:
+            raise exceptions.AuthenticationFailed('Bad API key')
 
         # Build string to sign from "headers" part of Signature value.
         computed_string = self.build_signature(api_key, secret, request)
