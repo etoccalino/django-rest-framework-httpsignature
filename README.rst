@@ -37,6 +37,9 @@ It has been reported that some newer versions of pip might download the requiere
 
 Those steps make explicity what should be automatic. Thanks Alberto Gragera for both spotting the problem and providing a solution.
 
+Another issue (which I've had myself) comes up when upgrading from ``http_signature`` to ``httpsig``: pip cannot install the new package, for some reason. The solution is to upgrade pip using (I was using pip==1.2.1)::
+
+  pip install --upgrade pip
 
 Running the tests
 =================
@@ -116,7 +119,7 @@ And with much less pain, using the modules ``requests`` and ``http_signature``::
   API_KEY_ID = 'su-key'
   SECRET = 'my secret string'
 
-  signature_headers = ['(request-line)', 'accept', 'date', 'host']
+  signature_headers = ['(request-target)', 'accept', 'date', 'host']
   headers = {
       'Host': 'localhost:8000',
       'Accept': 'application/json',
