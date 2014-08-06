@@ -152,7 +152,7 @@ class SignatureAuthenticationTestCase(TestCase):
 
         def fetch_user_data(self, api_key):
             if api_key != KEYID:
-                raise AuthenticationFailed('Bad API key')
+                return None
 
             return (self.user, SECRET)
 
@@ -160,8 +160,7 @@ class SignatureAuthenticationTestCase(TestCase):
     TEST_PASSWORD = 'test-password'
 
     def setUp(self):
-        User.objects.create(username=self.TEST_USERNAME)
-        self.test_user = User.objects.get(username=self.TEST_USERNAME)
+        self.test_user = User(username=self.TEST_USERNAME)
         self.test_user.set_password(self.TEST_PASSWORD)
         self.auth = self.APISignatureAuthentication(self.test_user)
 
@@ -203,3 +202,4 @@ class SignatureAuthenticationTestCase(TestCase):
         result = self.auth.authenticate(request)
         self.assertIsNotNone(result)
         self.assertEqual(result[0], self.test_user)
+        self.assertEqual(result[1], KEYID)
