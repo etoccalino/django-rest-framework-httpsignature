@@ -1,4 +1,10 @@
-v0.1.5, 20140613 -- Document installation issue
+v0.2.0, 20140803 -- Move to use httpsig package.
+
+        * Update documentation
+        * Adapt to httpsig (thanks Konstantinos Koukopoulos)
+        * Using draft 03 lastest version
+
+ v0.1.5, 20140613 -- Document installation issue
 
         * Document workaround on installation problems.
 
