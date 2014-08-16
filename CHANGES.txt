@@ -1,3 +1,8 @@
+v0.1.7, 20140802 -- Fix fetching user data
+
+        * Correctly handle a bad API KEY, adapt test code
+          (Thanks @benctamas)
+
 v0.1.6, 20140706 -- Slight improvement to API
 
         * Return API key on successful authentication
