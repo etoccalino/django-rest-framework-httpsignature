@@ -7,20 +7,20 @@ import re
 class SignatureAuthentication(authentication.BaseAuthentication):
 
     SIGNATURE_RE = re.compile('signature="(.+?)"')
-    SIGNATURE_HEADERS_RE = re.compile('.+headers="([\sa-z0-9-]+)".*')
+    SIGNATURE_HEADERS_RE = re.compile('headers="([\sa-z0-9-]+)"')
 
     API_KEY_HEADER = 'X-Api-Key'
 
     def get_signature_from_signature_string(self, signature):
         """Return the signature from the signature header or None."""
-        match = self.SIGNATURE_RE.match(signature)
+        match = self.SIGNATURE_RE.search(signature)
         if not match:
             return None
         return match.group(1)
 
     def get_headers_from_signature(self, signature):
         """Returns a list of headers fields to sign."""
-        match = self.SIGNATURE_HEADERS_RE.match(signature)
+        match = self.SIGNATURE_HEADERS_RE.search(signature)
         if not match:
             raise exceptions.AuthenticationFailed('Bad signature')
         headers_string = match.group(1)
