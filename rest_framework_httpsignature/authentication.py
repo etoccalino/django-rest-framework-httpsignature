@@ -1,6 +1,6 @@
 from rest_framework import authentication
 from rest_framework import exceptions
-from http_signature import HeaderSigner
+from httpsig import HeaderSigner
 import re
 
 
@@ -44,7 +44,7 @@ class SignatureAuthentication(authentication.BaseAuthentication):
         """
         d = {}
         for header in signature_headers:
-            if header == 'request-line':
+            if header == '(request-target)':
                 continue
             d[header] = request.META.get(self.header_canonical(header))
         return d
@@ -94,6 +94,7 @@ class SignatureAuthentication(authentication.BaseAuthentication):
             computed_string)
 
         if computed_signature != sent_signature:
+            print 'BAD SIGNATURE: expected=%s but got=%s' % (computed_signature, sent_signature)  # DEBUG
             raise exceptions.AuthenticationFailed('Bad signature')
 
         return (user, api_key)

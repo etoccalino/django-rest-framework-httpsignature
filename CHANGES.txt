@@ -1,3 +1,14 @@
+v0.2.1, 20140818 -- Fix tests
+
+        * Update to latest version of httpsig
+        * Brought 0.1.x fixes in to 0.2.x branch
+
+v0.2.0, 20140803 -- Move to use httpsig package
+
+        * Update documentation
+        * Adapt to httpsig (thanks Konstantinos Koukopoulos)
+        * Using draft 03 lastest version
+
 v0.1.8, 20140818 -- Improve dependency management
 
         * Loosen dependencies in setup.py

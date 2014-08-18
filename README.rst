@@ -11,7 +11,6 @@ Overview
 
 Provides `HTTP Signature`_ support for `Django REST framework`_. The HTTP Signature package provides a way to achieve origin authentication and message integrity for HTTP messages. Similar to Amazon's `HTTP Signature scheme`_, used by many of its services. The `HTTP Signature`_ specification is currently an IETF draft.
 
-
 .. contents::
 
 Installation
@@ -21,22 +20,9 @@ Installing the package via the repository::
 
    pip install djangorestframework-httpsignature
 
-The current implementation depends on `http_signature by David Lehn`_, who has updated the original code to match the revised spec. This dependency is reflected in the ``REQUIREMENTS.txt`` file, and pip will pull the code from David's repository.
+Older version of ``pip`` don't support the Wheel format (which is how ``httpsig`` is distributed). The problem manifests when installing the requirements, ``pip`` will complain that it cannot find a ``httpsig``. In such cases, ``pip`` needs to be upgraded::
 
-
-Troubleshooting
----------------
-
-It has been reported that some newer versions of pip might download the requiered package http_signature from PyPI instead of the repository listed in REQUIREMENTS.txt. If this is your case, a workaround is:
-
-1. ``git clone https://github.com/etoccalino/django-rest-framework-httpsignature.git``
-2. ``cd django-rest-framework-httpsignature``
-3. remove the whole line in REQUIREMENTS.txt that references **py-http-signature**
-4. ``pip install`` the entire line (including the "-e" at the beginning)
-5. ``pip install -r REQUIREMENTS.txt``
-
-Those steps make explicity what should be automatic. Thanks Alberto Gragera for both spotting the problem and providing a solution.
-
+  pip install --upgrade pip
 
 Running the tests
 =================
@@ -108,32 +94,11 @@ Assuming the setup detailed in `Usage`_, a project running on ``localhost:8000``
   ~$ SSS=Base64(Hmac(SECRET, "Date: Mon, 17 Feb 2014 06:11:05 GMT", SHA256))
   ~$ curl -v -H 'Date: "Mon, 17 Feb 2014 06:11:05 GMT"' -H 'Authorization: Signature keyId="my-key",algorithm="hmac-sha256",headers="date",signature="SSS"'
 
-And with much less pain, using the modules ``requests`` and ``http_signature``::
-
-  import requests
-  from http_signature.requests_auth import HTTPSignatureAuth
-
-  API_KEY_ID = 'su-key'
-  SECRET = 'my secret string'
-
-  signature_headers = ['request-line', 'accept', 'date', 'host']
-  headers = {
-      'Host': 'localhost:8000',
-      'Accept': 'application/json',
-      'X-Api-Key': API_KEY_ID,
-  }
-
-  # We omit the "Date" header, so http_signature adds it.
-  auth = HTTPSignatureAuth(key_id=API_KEY_ID, secret=SECRET,
-                           algorithm='hmac-sha256',
-                           headers=signature_headers)
-  req = requests.get('http://localhost:8000/resource/',
-                     auth=auth, headers=headers)
-  print req.content
+And for a much less painful example, check out the `httpsig package`_ documentation to use ``requests`` and ``httpsig``.
 
 
 .. References:
 .. _`HTTP Signature`: https://datatracker.ietf.org/doc/draft-cavage-http-signatures/
 .. _`Django REST framework`: http://django-rest-framework.org/
 .. _`HTTP Signature scheme`: http://docs.aws.amazon.com/general/latest/gr/signature-version-4.html
-.. _`http_signature by David Lehn`: https://github.com/digitalbazaar/py-http-signature
+.. _`httpsig package`: https://pypi.python.org/pypi/httpsig

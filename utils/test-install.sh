@@ -6,14 +6,9 @@
 #
 
 
-REPO_DIR=""        # Where the source code lives (to build the dist)
-VIRTUALENV_DIR=""  # Where the source code virtualenv lives (to build the dist)
-DEST_DIR=""        # Where to install. Must not exist.
-
-# Example:
-#   REPO_DIR="$HOME/programming/django-rest-framework-httpsignature"
-#   VIRTUALENV_DIR="${REPO_DIR}/env"
-#   DEST_DIR="$HOME/tmp/t"
+REPO_DIR="$HOME/programming/django-rest-framework-httpsignature"
+VIRTUALENV_DIR="${REPO_DIR}/env"
+DEST_DIR="$HOME/tmp/t"
 
 set -e
 set -x
@@ -29,6 +24,8 @@ mkdir ${DEST_DIR}
 cd ${DEST_DIR}
 virtualenv .
 source bin/activate
+
+pip install -U pip
 pip install ${REPO_DIR}/dist/*
 
 # The installation was successful. Destroy the test environment.

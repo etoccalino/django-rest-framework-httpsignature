@@ -1,0 +1,6 @@
+Christopher Grebs - Dependency management and regexp improvements.
+Konstantinos Koukopoulos - Improve API and adapt to httpsig package.
+"benctamas" - Code review and fix.
+Alberto Gragera - Installation troubleshooting.
+David Lehn - Draft and Implemtation insight.
+Elvio Toccalino - Developer, maintainer.
