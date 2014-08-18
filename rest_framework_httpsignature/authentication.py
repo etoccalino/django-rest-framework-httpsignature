@@ -7,7 +7,7 @@ import re
 class SignatureAuthentication(authentication.BaseAuthentication):
 
     SIGNATURE_RE = re.compile('signature="(.+?)"')
-    SIGNATURE_HEADERS_RE = re.compile('headers="([\sa-z0-9-]+)"')
+    SIGNATURE_HEADERS_RE = re.compile('headers="([\(\)\sa-z0-9-]+?)"')
 
     API_KEY_HEADER = 'X-Api-Key'
 
@@ -19,10 +19,15 @@ class SignatureAuthentication(authentication.BaseAuthentication):
         return match.group(1)
 
     def get_headers_from_signature(self, signature):
-        """Returns a list of headers fields to sign."""
+        """Returns a list of headers fields to sign.
+
+        According to http://tools.ietf.org/html/draft-cavage-http-signatures-03
+        section 2.1.3, the headers are optional. If not specified, the single
+        value of "Date" must be used.
+        """
         match = self.SIGNATURE_HEADERS_RE.search(signature)
         if not match:
-            raise exceptions.AuthenticationFailed('Bad signature')
+            return ['date']
         headers_string = match.group(1)
         return headers_string.split()
 
@@ -94,7 +99,6 @@ class SignatureAuthentication(authentication.BaseAuthentication):
             computed_string)
 
         if computed_signature != sent_signature:
-            print 'BAD SIGNATURE: expected=%s but got=%s' % (computed_signature, sent_signature)  # DEBUG
             raise exceptions.AuthenticationFailed('Bad signature')
 
         return (user, api_key)

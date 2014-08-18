@@ -73,10 +73,11 @@ class SignatureTestCase(SimpleTestCase):
     def setUp(self):
         self.auth = SignatureAuthentication()
 
-    def test_no_headers_in_signature(self):
+    def test_no_headers_in_signature_is_date(self):
         signature = build_signature([])
-        self.assertRaises(AuthenticationFailed,
-                          self.auth.get_headers_from_signature, signature)
+        headers = self.auth.get_headers_from_signature(signature)
+        self.assertEqual(1, len(headers))
+        self.assertEqual("date", headers[0])
 
     def test_date_in_signature(self):
         signature = build_signature(['date'])
