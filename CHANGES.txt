@@ -1,3 +1,9 @@
+v0.1.8, 20140818 -- Improve dependency management
+
+        * Loosen dependencies in setup.py
+        * Fix signature/headers regular expressions
+          (Thanks Christopher Grebs)
+
 v0.1.7, 20140802 -- Fix fetching user data
 
         * Correctly handle a bad API KEY, adapt test code
