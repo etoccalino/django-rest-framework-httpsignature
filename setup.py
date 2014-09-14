@@ -13,8 +13,6 @@ setup(
     install_requires=[
         'Django>=1.6.2,<1.8',
         'djangorestframework>=2.3.14,<2.4',
-        'Django>=1.6.2',
-        'djangorestframework>=2.3.12',
         'pycrypto>=2.6.1',
         'httpsig',
     ],
