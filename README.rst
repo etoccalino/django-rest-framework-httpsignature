@@ -77,11 +77,27 @@ To authenticate HTTP requests via HTTP signature, you need to:
     # The above will force HTTP signature for all requests.
     # ...
 
+You can also use another algorithm that is provided by `httpsig package`_::
+
+    class MyAPISignatureAuthentication(SignatureAuthentication):
+        API_KEY_HEADER = 'X-Api-Key'
+        ALGORITHM = 'rsa-256'
+
+        def fetch_user_data(self, api_key):
+            try:
+                user = User.objects.get(api_key=api_key)
+                fpath = user.private_key
+                with open(fpath, 'rb') as fobj:
+                    secret = fobj.read()
+                return (user, secret)
+            except User.DoesNotExist:
+                return (None, None)
+
+Currently supported throught ``httpsig`` are: ``rsa-sha1``, ``rsa-sha256``, ``rsa-sha512``, ``hmac-sha1``, ``hmac-sha256``, ``hmac-sha512``
 
 Roadmap
 =======
 
-- Currently, the library only support HMAC SHA256 for signing.
 - The ``REQUIREMENTS.txt`` file is fairly strict. It is very possible that previous versions of Django and Django REST framework are supported.
 - Since HTTP Signature uses a HTTP header for the request date and time, the authentication class could deal with request expiry.
 
