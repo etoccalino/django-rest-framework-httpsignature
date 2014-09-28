@@ -1,3 +1,4 @@
+from django.conf import settings
 from rest_framework import authentication
 from rest_framework import exceptions
 from httpsig import HeaderSigner
@@ -10,6 +11,7 @@ class SignatureAuthentication(authentication.BaseAuthentication):
     SIGNATURE_HEADERS_RE = re.compile('headers="([\(\)\sa-z0-9-]+?)"')
 
     API_KEY_HEADER = 'X-Api-Key'
+    ALGORITHM = 'hmac-sha256'
 
     def get_signature_from_signature_string(self, signature):
         """Return the signature from the signature header or None."""
@@ -65,7 +67,7 @@ class SignatureAuthentication(authentication.BaseAuthentication):
         # Sign string and compare.
         signer = HeaderSigner(
             key_id=user_api_key, secret=user_secret,
-            headers=signature_headers, algorithm='hmac-sha256')
+            headers=signature_headers, algorithm=self.ALGORITHM)
         signed = signer.sign(unsigned, method=request.method, path=path)
         return signed['authorization']
 
