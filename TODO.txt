@@ -1,3 +1,8 @@
+* Christopher Grebs opened up the API to use algorithms other than hmac-sha256:
+  * Document available algorithms
+  * Document API changes (class attribute)
+  * expose RSA?
+  * version, update changelog & update PyPI (in maintenance right now)
 * Investigate requirements:
   * how far down Django?
   * how far down rest_framework?
