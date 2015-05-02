@@ -1,3 +1,10 @@
+v1.0.0, 20150501 -- Relaxed dependencies
+
+        * Let Django version float all the way up to 1.8.x and above
+          Thanks Markus Holtermann
+        * Let DRF version float all the way up to 3.x and above
+          Thanks Sofia Margariti
+
 v0.2.1, 20140818 -- Fix tests
 
         * Update to latest version of httpsig
