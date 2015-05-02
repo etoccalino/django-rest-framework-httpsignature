@@ -1,4 +1,0 @@
-Django==1.6.2
-djangorestframework==2.3.12
-pycrypto==2.6.1
-httpsig==1.0.0
