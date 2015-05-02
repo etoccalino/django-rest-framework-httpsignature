@@ -24,6 +24,13 @@ Older version of ``pip`` don't support the Wheel format (which is how ``httpsig`
 
   pip install --upgrade pip
 
+Another possible problem: while installing via ``python setup.py install`` you may encounter::
+
+  No local packages or download links found for httpsig
+  error: Could not find suitable distribution for Requirement.parse('httpsig')
+
+If that is the case, use ``pip install httpsig`` to install the ``httpsig`` package and retry ``python setup.py install``.
+
 Running the tests
 =================
 
